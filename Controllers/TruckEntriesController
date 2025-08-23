@@ -1,0 +1,23 @@
+using Microsoft.AspNetCore.Mvc;
+using TerminalContainerApp.Data;
+using TerminalContainerApp.Models;
+using System.Linq;
+
+namespace TerminalContainerApp.Controllers
+{
+    public class TruckEntriesController : Controller
+    {
+        private readonly ApplicationDbContext _context;
+
+        public TruckEntriesController(ApplicationDbContext context)
+        {
+            _context = context;
+        }
+
+        public IActionResult Index()
+        {
+            var entries = _context.TruckEntries.ToList();
+            return View(entries);
+        }
+    }
+}

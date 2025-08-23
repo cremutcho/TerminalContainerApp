@@ -1,0 +1,108 @@
+@model IEnumerable<TerminalContainerApp.Models.TruckEntry>
+
+@{
+    ViewData["Title"] = "Registro de Caminhões";
+}
+
+<!-- Bootstrap -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+
+<!-- Font Awesome para ícones -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+
+<style>
+    body {
+        font-family: 'Roboto', sans-serif;
+        background-color: #f4f6f8;
+        color: #343a40;
+    }
+
+    h1 {
+        font-weight: 700;
+        margin-bottom: 20px;
+    }
+
+    table {
+        font-size: 14px;
+        border-radius: 5px;
+        overflow: hidden;
+    }
+
+    thead th {
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        background-color: #343a40;
+        color: #fff;
+    }
+
+    tbody tr:hover {
+        background-color: #e2e6ea;
+    }
+
+    /* Status das linhas */
+    .status-in {
+        background-color: #fff3cd; /* amarelo */
+        color: #856404;
+        font-weight: 500;
+    }
+
+    .status-out {
+        background-color: #d4edda; /* verde claro */
+        color: #155724;
+        font-weight: 500;
+    }
+
+    /* Botões */
+    .btn {
+        font-family: 'Roboto', sans-serif;
+        font-size: 13px;
+    }
+
+    .icon-status {
+        margin-right: 5px;
+    }
+</style>
+
+<h1>@ViewData["Title"]</h1>
+
+<p>
+    <a class="btn btn-primary" asp-action="Create"><i class="fas fa-plus-circle icon-status"></i>Criar Novo Registro</a>
+</p>
+
+<div class="table-responsive">
+    <table class="table table-bordered table-hover">
+        <thead>
+            <tr>
+                <th>Placa</th>
+                <th>Container</th>
+                <th>Entrada</th>
+                <th>Saída</th>
+                <th>Status</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+        @foreach (var item in Model) {
+            var statusClass = item.ExitTime.HasValue ? "status-out" : "status-in";
+            var statusIcon = item.ExitTime.HasValue ? "fa-check-circle text-success" : "fa-truck text-warning";
+            var statusText = item.ExitTime.HasValue ? "Saiu" : "No Pátio";
+            <tr class="@statusClass">
+                <td>@item.TruckPlate</td>
+                <td>@item.ContainerNumber</td>
+                <td>@item.EntryTime.ToString("HH:mm dd/MM/yyyy")</td>
+                <td>@(item.ExitTime.HasValue ? item.ExitTime.Value.ToString("HH:mm dd/MM/yyyy") : "-")</td>
+                <td><i class="fas @statusIcon icon-status"></i>@statusText</td>
+                <td>
+                    <a class="btn btn-sm btn-info" asp-action="Edit" asp-route-id="@item.Id"><i class="fas fa-edit icon-status"></i>Editar</a>
+                    <a class="btn btn-sm btn-secondary" asp-action="Details" asp-route-id="@item.Id"><i class="fas fa-info-circle icon-status"></i>Detalhes</a>
+                    <a class="btn btn-sm btn-danger" asp-action="Delete" asp-route-id="@item.Id"><i class="fas fa-trash-alt icon-status"></i>Excluir</a>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>
