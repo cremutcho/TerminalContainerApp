@@ -1,4 +1,4 @@
-erminalContainerApp
+TerminalContainerApp
 
 Aplicação web para gerenciamento de containers, desenvolvida em C# com ASP.NET Core MVC e SQL Server.
 
